@@ -218,8 +218,14 @@
     border-radius: 4px;
     text-decoration: none;
     transition: background 0.2s, color 0.2s, transform 0.15s;
-    background: var(--green-dark);
-    color: var(--white);
+  }
+  .btn-primary {
+    position: relative;
+    z-index: 2;
+  }
+  .btn-primary:hover {
+    background: var(--green-dark) !important;
+    color: var(--white) !important;
     transform: translateY(-2px);
   }
 
@@ -727,7 +733,6 @@
     .schedule-grid { grid-template-columns: 1fr; gap: 16px; }
     .speaker-inner { grid-template-columns: 1fr; gap: 40px; }
     .speaker-photo-wrap { max-width: 260px; margin: 0 auto; }
-    .ticket-card { max-width: 100%; }
   }
 
   /* ── MOBILE (max 600px) ── */
@@ -741,10 +746,10 @@
     .hero-sub { font-size: 14px; }
     .hero-eyebrow { font-size: 10px; }
     .hero-meta-item { font-size: 13px; }
-    .btn-primary { font-size: 14px; padding: 14px 24px; width: 100%; justify-content: center; }
+    .btn-primary { font-size: 14px; padding: 14px 24px; justify-content: center; }
+    .btn-vip-wrapper { width: 100%; max-width: 420px; }
     .section-video, .section-benefits, .section-foryou,
     .section-quote, .section-schedule, .section-speaker,
-    .section-ticket { padding: 56px 20px; }
     .section-video h2 { font-size: 20px; }
     .benefits-grid { grid-template-columns: 1fr; gap: 14px; }
     .benefit-card { padding: 24px 20px; }
@@ -770,7 +775,6 @@
   @media (max-width: 380px) {
     .hero h1 { font-size: 24px; }
     .btn-primary { font-size: 13px; padding: 13px 18px; }
-    .ticket-price { font-size: 44px; }
     .nav-cta { display: none; }
   }
 
@@ -852,6 +856,38 @@
     opacity: 1;
     transform: none;
   }
+
+  .btn-vip-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 420px;
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  .btn-vip-wrapper .btn-primary {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+  .btn-vip-wrapper .bloco-vip {
+    width: 100%;
+  }
+  .bloco-vip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    border: 1px solid rgba(255,107,0,0.15);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--gray);
+  }
 </style>
 </head>
 <body>
@@ -907,9 +943,19 @@
         <div>FGV – Fundação Gerando Valor<br>Suite 6, 1st Floor, 49-51 East Road, London N1 6AH</div>
       </div>
     </div>
-    <a href="#ingresso" class="btn-primary">
-        Inscrever-me agora
-    </a>
+    <div class="btn-vip-wrapper">
+<a href="#" class="btn-primary open-modal">Entrar no grupo VIP</a>
+<div class="bloco-vip">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-top:2px;">
+  <defs><linearGradient id="EG_gift" x1="0" y1="0" x2="18" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B00"/><stop offset="50%" stop-color="#8B2FC9"/><stop offset="100%" stop-color="#00D4FF"/></linearGradient></defs>
+  <rect x="1" y="7" width="16" height="3" rx="1" stroke="url(#EG_gift)" stroke-width="1.4"/>
+  <path d="M3 10v6h12v-6" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M9 7v9" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M9 7C9 7 6 7 6 4.5S7.5 2 9 4c1.5-2 3-2.5 3 0S9 7 9 7z" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+  <span>Ao entrar no grupo VIP você garante acesso a uma oferta exclusiva, disponível apenas para membros do grupo.</span>
+</div>
+</div>
   </div>
 </section>
 
@@ -920,9 +966,19 @@
   <div class="video-wrap">
     <iframe src="https://www.youtube.com/embed/awAhT4j2ECo?autoplay=1&mute=1" title="Imersão Método EVO" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
   </div>
-  <a href="#ingresso" class="btn-primary">
-        Inscrever-me agora
-  </a>
+  <div class="btn-vip-wrapper">
+<a href="#" class="btn-primary open-modal">Entrar no grupo VIP</a>
+<div class="bloco-vip">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-top:2px;">
+  <defs><linearGradient id="EG_gift" x1="0" y1="0" x2="18" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B00"/><stop offset="50%" stop-color="#8B2FC9"/><stop offset="100%" stop-color="#00D4FF"/></linearGradient></defs>
+  <rect x="1" y="7" width="16" height="3" rx="1" stroke="url(#EG_gift)" stroke-width="1.4"/>
+  <path d="M3 10v6h12v-6" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M9 7v9" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M9 7C9 7 6 7 6 4.5S7.5 2 9 4c1.5-2 3-2.5 3 0S9 7 9 7z" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+  <span>Ao entrar no grupo VIP você garante acesso a uma oferta exclusiva, disponível apenas para membros do grupo.</span>
+</div>
+</div>
 </section>
 
 <!-- BENEFÍCIOS -->
@@ -1013,9 +1069,19 @@
     </div>
   </div>
   <div style="text-align:center;margin-top:52px;">
-    <a href="#ingresso" class="btn-primary">
-        Inscrever-me agora
-    </a>
+    <div class="btn-vip-wrapper">
+<a href="#" class="btn-primary open-modal">Entrar no grupo VIP</a>
+<div class="bloco-vip">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-top:2px;">
+  <defs><linearGradient id="EG_gift" x1="0" y1="0" x2="18" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B00"/><stop offset="50%" stop-color="#8B2FC9"/><stop offset="100%" stop-color="#00D4FF"/></linearGradient></defs>
+  <rect x="1" y="7" width="16" height="3" rx="1" stroke="url(#EG_gift)" stroke-width="1.4"/>
+  <path d="M3 10v6h12v-6" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M9 7v9" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M9 7C9 7 6 7 6 4.5S7.5 2 9 4c1.5-2 3-2.5 3 0S9 7 9 7z" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+  <span>Ao entrar no grupo VIP você garante acesso a uma oferta exclusiva, disponível apenas para membros do grupo.</span>
+</div>
+</div>
   </div>
 </section>
 
@@ -1024,9 +1090,19 @@
   <blockquote class="fade-in">
     "Acredite, você pode alcançar sua <span class="evo-gradient">melhor versão</span> com os recursos que tem disponível hoje."
   </blockquote>
-  <a href="#ingresso" class="btn-primary">
-        Inscrever-me agora
-  </a>
+  <div class="btn-vip-wrapper">
+<a href="#" class="btn-primary open-modal">Entrar no grupo VIP</a>
+<div class="bloco-vip">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-top:2px;">
+  <defs><linearGradient id="EG_gift" x1="0" y1="0" x2="18" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B00"/><stop offset="50%" stop-color="#8B2FC9"/><stop offset="100%" stop-color="#00D4FF"/></linearGradient></defs>
+  <rect x="1" y="7" width="16" height="3" rx="1" stroke="url(#EG_gift)" stroke-width="1.4"/>
+  <path d="M3 10v6h12v-6" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M9 7v9" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M9 7C9 7 6 7 6 4.5S7.5 2 9 4c1.5-2 3-2.5 3 0S9 7 9 7z" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+  <span>Ao entrar no grupo VIP você garante acesso a uma oferta exclusiva, disponível apenas para membros do grupo.</span>
+</div>
+</div>
 </section>
 
 <!-- CRONOGRAMA -->
@@ -1080,51 +1156,7 @@
 </section>
 
 <!-- INGRESSO -->
-<section class="section-ticket" id="ingresso">
-  <h2>Escolha seu <span class="evo-gradient">acesso:</span></h2>
-  <p class="sub">Vagas limitadas — garanta já a sua participação</p>
 
-  <div class="ticket-card fade-up">
-    <div class="ticket-header">
-      <h3>Acesso Individual</h3>
-    </div>
-    <div class="ticket-body">
-      <p class="ticket-desc">Este acesso garante sua participação no evento.</p>
-      <p class="ticket-price-old">de £ 497 por apenas</p>
-      <div class="ticket-price">
-        <span>£</span>97
-      </div>
-      <p class="ticket-installments">ou em até 3x no cartão</p>
-      <ul class="ticket-features">
-        <li>Participação nos 3 dias do Imersão Método EVO</li>
-        <li>Acesso a todas as ferramentas</li>
-        <li>Material de apoio</li>
-      </ul>
-      <!-- Botão abre popup -->
-      <button onclick="abrirPopup()" class="btn-ticket">INSCREVER-ME AGORA</button>
-      <p style="font-size:12px;color:var(--grey);text-align:center;">🔒 Compra 100% segura</p>
-
-      <!-- Barra de progresso -->
-      <div class="progress-wrap">
-        <div class="progress-header">
-          <span class="progress-label">Vagas preenchidas</span>
-          <span class="progress-pct" id="prog-pct">0%</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" id="prog-bar"></div>
-        </div>
-        <p class="progress-note">⚡ Garanta sua inscrição antes que encerre</p>
-      </div>
-    </div>
-    <div class="ticket-footer">
-      <span class="label">Total</span>
-      <span class="total">£ 97</span>
-    </div>
-    
-  </div>
-
-  <p class="ticket-notice">* Treinamento para maiores de 16 anos.</p>
-</section>
 
 <!-- SPEAKER -->
 <section class="section-speaker">
@@ -1139,9 +1171,19 @@
       <p>Minha família é o <strong>meu bem mais precioso</strong> e juntos temos criado memórias extraordinárias. Sou ex-servidor público e, embora tenha exercido essa função com dedicação, descobri verdadeiramente o meu propósito de vida por meio do Coaching e quero compartilhar com você todas as <strong>infinitas possibilidades</strong> de realizações que temos nessa vida de sermos felizes com aquilo que somos.</p>
       <p>Venha comigo! Eu quero apresentar para você como <strong>alcançar seus objetivos</strong> mais ousados.</p>
       <br>
-      <a href="#ingresso" class="btn-primary">
-        Inscrever-me agora
-      </a>
+      <div class="btn-vip-wrapper">
+<a href="#" class="btn-primary open-modal">Entrar no grupo VIP</a>
+<div class="bloco-vip">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-top:2px;">
+  <defs><linearGradient id="EG_gift" x1="0" y1="0" x2="18" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B00"/><stop offset="50%" stop-color="#8B2FC9"/><stop offset="100%" stop-color="#00D4FF"/></linearGradient></defs>
+  <rect x="1" y="7" width="16" height="3" rx="1" stroke="url(#EG_gift)" stroke-width="1.4"/>
+  <path d="M3 10v6h12v-6" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M9 7v9" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M9 7C9 7 6 7 6 4.5S7.5 2 9 4c1.5-2 3-2.5 3 0S9 7 9 7z" stroke="url(#EG_gift)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+  <span>Ao entrar no grupo VIP você garante acesso a uma oferta exclusiva, disponível apenas para membros do grupo.</span>
+</div>
+</div>
     </div>
   </div>
 </section>
@@ -1153,65 +1195,11 @@
     <a href="https://marciomicheli.com.br/politica-de-privacidade" target="_blank" rel="noopener">Política de privacidade</a>
     <a href="https://marciomicheli.com.br/termos-de-uso" target="_blank" rel="noopener">Termos de uso</a>
   </div>
-  <p>4H Desenvolvimento Humano Ltda · CNPJ 67.020.759/0001-07</p>
+  <p>EVO Human Development LTD · Company number 17054564</p>
   <p>© 2026 IME – Imersão Método EVO · Londres</p>
 </footer>
 
-<script>
-  // ── BARRA DE PROGRESSO ──
-  function calcProgress() {
-    const eventDate  = new Date('2026-09-25T10:00:00');
-    const startDate  = new Date('2026-07-23T00:00:00');
-    const today      = new Date();
-    const daysLeft   = (eventDate - today) / (1000 * 60 * 60 * 24);
-    const totalDays  = (eventDate - startDate) / (1000 * 60 * 60 * 24);
-    const daysPassed = (today - startDate) / (1000 * 60 * 60 * 24);
-    if (daysLeft <= 1)  return 99;
-    if (daysLeft <= 10) return 95;
-    const activeDays = totalDays - 10;
-    const progress   = Math.max(0, Math.min(daysPassed / activeDays, 1));
-    return Math.round(3 + progress * 92);
-  }
 
-  function animateProgress(targetPct) {
-    const bar   = document.getElementById('prog-bar');
-    const label = document.getElementById('prog-pct');
-    if (!bar || !label) return;
-    let current = 0;
-    const steps = 60;
-    const inc   = targetPct / steps;
-    const timer = setInterval(() => {
-      current = Math.min(current + inc, targetPct);
-      bar.style.width   = current + '%';
-      label.textContent = Math.round(current) + '%';
-      if (current >= targetPct) clearInterval(timer);
-    }, 1200 / steps);
-  }
-
-  const ticketCard = document.querySelector('.ticket-card');
-  if (ticketCard) {
-    const progObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setTimeout(() => animateProgress(calcProgress()), 400);
-          progObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
-    progObserver.observe(ticketCard);
-  }
-
-  const animEls = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .fade-in');
-  const animObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        animObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  animEls.forEach(el => animObserver.observe(el));
-</script>
 <!-- POPUP DE CAPTURA -->
 <div id="popup-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;align-items:center;justify-content:center;padding:20px;">
   <div id="popup-box" style="background:#1a1a1a;border:1px solid rgba(0,212,255,0.2);border-radius:12px;max-width:480px;width:100%;padding:40px 36px;position:relative;box-shadow:0 0 60px rgba(0,0,0,0.6);">
@@ -1223,7 +1211,7 @@
     <img src="https://github.com/crisgonbarros/ime-londres/blob/main/img/logo-londres.png?raw=true" alt="IME" style="height:36px;margin-bottom:24px;display:block;">
 
     <!-- Título -->
-    <h3 style="font-family:'Montserrat',sans-serif;font-size:18px;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.4;">Preencha com seus dados para acessar a página de compra:</h3>
+    <h3 style="font-family:'Montserrat',sans-serif;font-size:18px;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.4;">Preencha seus dados para entrar no grupo VIP:</h3>
     <p style="font-size:13px;color:#888;margin-bottom:28px;font-family:'Open Sans',sans-serif;">Seus dados estão seguros e não serão compartilhados.</p>
 
     <!-- Formulário -->
@@ -1283,7 +1271,7 @@
       <!-- Botão enviar -->
       <button type="submit" id="btn-enviar"
         style="width:100%;background:#1BB954;color:#000;font-family:'Montserrat',sans-serif;font-weight:600;font-size:16px;letter-spacing:0.04em;padding:16px;border-radius:6px;border:none;cursor:pointer;transition:background 0.2s,color 0.2s;text-transform:uppercase;">
-        INSCREVER-ME AGORA
+        ENTRAR NO GRUPO VIP
       </button>
       <p style="font-size:11px;color:#666;text-align:center;margin-top:12px;font-family:'Open Sans',sans-serif;">🔒 Seus dados estão protegidos</p>
     </form>
@@ -1310,20 +1298,81 @@
   }
 </style>
 
+
+
+
+
+
 <script>
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlhZH0d1QfwaaG1vF2r3kyn0-K87w-d45hrM07n97g5IBn452ewF13lKZcYvx_yaUhXw/exec'; // TODO: substituir após criar planilha
-  const CHECKOUT_URL = '#'; // TODO: substituir pelo link de checkout de Londres
+  // ── BARRA DE PROGRESSO ──
+  function calcProgress() {
+    const eventDate  = new Date('2026-09-25T10:00:00');
+    const startDate  = new Date('2026-07-23T00:00:00');
+    const today      = new Date();
+    const daysLeft   = (eventDate - today) / (1000 * 60 * 60 * 24);
+    const totalDays  = (eventDate - startDate) / (1000 * 60 * 60 * 24);
+    const daysPassed = (today - startDate) / (1000 * 60 * 60 * 24);
+    if (daysLeft <= 1)  return 99;
+    if (daysLeft <= 10) return 95;
+    const activeDays = totalDays - 10;
+    const progress   = Math.max(0, Math.min(daysPassed / activeDays, 1));
+    return Math.round(3 + progress * 92);
+  }
+
+  function animateProgress(targetPct) {
+    const bar   = document.getElementById('prog-bar');
+    const label = document.getElementById('prog-pct');
+    if (!bar || !label) return;
+    let current = 0;
+    const steps = 60;
+    const inc   = targetPct / steps;
+    const timer = setInterval(() => {
+      current = Math.min(current + inc, targetPct);
+      bar.style.width   = current + '%';
+      label.textContent = Math.round(current) + '%';
+      if (current >= targetPct) clearInterval(timer);
+    }, 1200 / steps);
+  }
+
+  const ticketCard = document.querySelector('.ticket-card');
+  if (ticketCard) {
+    const progObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => animateProgress(calcProgress()), 400);
+          progObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    progObserver.observe(ticketCard);
+  }
+
+  // ── ANIMAÇÕES DE SCROLL ──
+  const animEls = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .fade-in');
+  const animObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        animObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  animEls.forEach(el => animObserver.observe(el));
+
+  // ── POPUP / FORMULÁRIO ──
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlhZH0d1QfwaaG1vF2r3kyn0-K87w-d45hrM07n97g5IBn452ewF13lKZcYvx_yaUhXw/exec';
+  const CHECKOUT_URL    = 'https://redirecionazap.com/r/metodo-evo-londres2/105322ZE4w';
 
   function abrirPopup() {
     const overlay = document.getElementById('popup-overlay');
-    // Resetar estado do popup
     document.getElementById('lead-form').style.display = 'block';
     document.getElementById('popup-loading').style.display = 'none';
     document.getElementById('campo-nome').value = '';
     document.getElementById('campo-email').value = '';
     document.getElementById('campo-telefone').value = '';
-    ['erro-nome','erro-email','erro-telefone'].forEach(id => document.getElementById(id).style.display = 'none');
-    // Abrir
+    ['erro-nome','erro-email','erro-telefone'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
+    });
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
@@ -1333,22 +1382,20 @@
     document.body.style.overflow = '';
   }
 
-  // Fechar ao clicar fora
   document.getElementById('popup-overlay').addEventListener('click', function(e) {
     if (e.target === this) fecharPopup();
   });
 
-  // Fechar com ESC
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') fecharPopup();
   });
 
   function atualizarDDI() {
     const select = document.getElementById('campo-pais');
-    const opt = select.options[select.selectedIndex];
-    const ddi = opt.getAttribute('data-ddi');
-    const tel = document.getElementById('campo-telefone');
-    tel.placeholder = ddi ? `${ddi} (00) 00000-0000` : 'Número com DDI';
+    const opt    = select.options[select.selectedIndex];
+    const ddi    = opt.getAttribute('data-ddi');
+    const tel    = document.getElementById('campo-telefone');
+    tel.placeholder = ddi ? ddi + ' (00) 00000-0000' : 'Número com DDI';
   }
 
   function validarEmail(email) {
@@ -1372,31 +1419,28 @@
 
   function enviarFormulario(e) {
     e.preventDefault();
-    
+
     const nome     = document.getElementById('campo-nome').value.trim();
     const email    = document.getElementById('campo-email').value.trim();
     const telefone = document.getElementById('campo-telefone').value.trim();
     const select   = document.getElementById('campo-pais');
     const pais     = select.options[select.selectedIndex].value;
-    const ddi      = select.options[select.selectedIndex].getAttribute('data-ddi');
+    const ddi      = select.options[select.selectedIndex].getAttribute('data-ddi') || '';
 
     let valido = true;
 
-    // Validar nome
     limparErro('erro-nome');
     if (nome.length < 3) {
       mostrarErro('erro-nome', 'Por favor, informe seu nome completo.');
       valido = false;
     }
 
-    // Validar email
     limparErro('erro-email');
     if (!validarEmail(email)) {
       mostrarErro('erro-email', 'Por favor, informe um e-mail válido.');
       valido = false;
     }
 
-    // Validar telefone
     limparErro('erro-telefone');
     if (!validarTelefone(telefone)) {
       mostrarErro('erro-telefone', 'Por favor, informe um telefone válido.');
@@ -1405,27 +1449,25 @@
 
     if (!valido) return;
 
-    // Mostrar loading
     document.getElementById('lead-form').style.display = 'none';
-    document.getElementById('popup-loading').style.display = 'block';
+    document.getElementById('popup-loading').style.display = 'flex';
 
-    // Enviar para Apps Script
     fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, email, pais, ddi, telefone })
+      body: JSON.stringify({ nome: nome, email: email, pais: pais, ddi: ddi, telefone: telefone }),
     })
-    .then(() => {
-      fecharPopup();
-      window.location.href = CHECKOUT_URL;
-    })
-    .catch(() => {
-      fecharPopup();
-      window.location.href = CHECKOUT_URL;
-    });
+    .then(function(r) { return r.json(); })
+    .then(function() { window.location.href = CHECKOUT_URL; })
+    .catch(function() { window.location.href = CHECKOUT_URL; });
   }
-</script>
 
+  // Botões que abrem o popup
+  document.querySelectorAll('.open-modal').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      abrirPopup();
+    });
+  });
+</script>
 </body>
 </html>
