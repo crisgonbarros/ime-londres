@@ -1667,7 +1667,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
   <div class="testimonials-carousel" id="testimonialsCarousel">
     <div class="testimonial-item">
       <div class="testimonial-video-wrap">
-        <iframe class="testimonial-iframe" data-video-id="9OYtiFWBG3Q" src="" title="Depoimento 1" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy"></iframe>
+        <iframe id="testimonial-yt-0" class="testimonial-iframe" data-video-id="9OYtiFWBG3Q" src="" title="Depoimento 1" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy"></iframe>
         <button class="btn-mute-testimonial" data-index="0" onclick="toggleTestimonialMute(0)" title="Ativar/desativar som">
           <svg class="icon-t-muted" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs><linearGradient id="gt-muted-0" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B00"/><stop offset="50%" stop-color="#8B2FC9"/><stop offset="100%" stop-color="#00D4FF"/></linearGradient></defs>
@@ -1686,7 +1686,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     </div>
     <div class="testimonial-item">
       <div class="testimonial-video-wrap">
-        <iframe class="testimonial-iframe" data-video-id="9z9-AGuWaYc" src="" title="Depoimento 2" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy"></iframe>
+        <iframe id="testimonial-yt-1" class="testimonial-iframe" data-video-id="9z9-AGuWaYc" src="" title="Depoimento 2" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy"></iframe>
         <button class="btn-mute-testimonial" data-index="1" onclick="toggleTestimonialMute(1)" title="Ativar/desativar som">
           <svg class="icon-t-muted" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs><linearGradient id="gt-muted-1" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B00"/><stop offset="50%" stop-color="#8B2FC9"/><stop offset="100%" stop-color="#00D4FF"/></linearGradient></defs>
@@ -1705,7 +1705,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     </div>
     <div class="testimonial-item">
       <div class="testimonial-video-wrap">
-        <iframe class="testimonial-iframe" data-video-id="LfJkOQTPQcA" src="" title="Depoimento 3" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy"></iframe>
+        <iframe id="testimonial-yt-2" class="testimonial-iframe" data-video-id="LfJkOQTPQcA" src="" title="Depoimento 3" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy"></iframe>
         <button class="btn-mute-testimonial" data-index="2" onclick="toggleTestimonialMute(2)" title="Ativar/desativar som">
           <svg class="icon-t-muted" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs><linearGradient id="gt-muted-2" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B00"/><stop offset="50%" stop-color="#8B2FC9"/><stop offset="100%" stop-color="#00D4FF"/></linearGradient></defs>
@@ -2282,57 +2282,79 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     });
   });
 
-  // ── DEPOIMENTOS EM VIDEO — LAZY LOAD + AUTOPLAY AO ENTRAR NA TELA ──
+  // ── DEPOIMENTOS EM VIDEO — PRELOAD IMEDIATO + PLAY AO ENTRAR NA TELA ──
   (function() {
     const carousel = document.getElementById('testimonialsCarousel');
     if (!carousel) return;
 
     const iframes = carousel.querySelectorAll('.testimonial-iframe');
-    let loaded = false;
-    let srcSet = false;
 
     const testimonialPlayers = [];
+    const testimonialReady = [false, false, false];
     const testimonialMuted = [true, true, true];
+    let sectionVisible = false;
 
-    function criarPlayersTestimonial() {
-      if (!srcSet || testimonialPlayers.length > 0) return;
-      if (!window.YT || !window.YT.Player) return;
-      iframes.forEach(function(iframe, i) {
-        testimonialPlayers[i] = new YT.Player(iframe, {});
+    // Carrega o src de todos os vídeos IMEDIATAMENTE (sem autoplay),
+    // para que fiquem prontos/bufferizados antes do usuário chegar na seção.
+    iframes.forEach(function(iframe) {
+      const videoId = iframe.getAttribute('data-video-id');
+      iframe.src = 'https://www.youtube.com/embed/' + videoId +
+        '?mute=1&controls=0&rel=0&playsinline=1&loop=1&playlist=' + videoId + '&enablejsapi=1&origin=' + window.location.origin;
+    });
+
+    function tentarTocarTodos() {
+      if (!sectionVisible) return;
+      testimonialPlayers.forEach(function(player, i) {
+        if (player && testimonialReady[i] && typeof player.playVideo === 'function') {
+          player.mute();
+          player.playVideo();
+        }
       });
-      loaded = true;
     }
 
-    // Se a API do YouTube (carregada pelo player principal) ficar pronta
-    // depois do carrossel já estar visível, tenta criar os players de novo.
+    function criarPlayersTestimonial() {
+      if (testimonialPlayers.length > 0) return;
+      if (!window.YT || !window.YT.Player) return;
+      iframes.forEach(function(iframe, i) {
+        testimonialPlayers[i] = new YT.Player('testimonial-yt-' + i, {
+          events: {
+            onReady: function() {
+              testimonialReady[i] = true;
+              tentarTocarTodos();
+            }
+          }
+        });
+      });
+    }
+
+    // Tenta criar os players assim que possível (API pode já estar
+    // pronta, já que o vídeo principal do hero carrega a mesma API).
+    criarPlayersTestimonial();
+
     const originalOnReady = window.onYouTubeIframeAPIReady;
     window.onYouTubeIframeAPIReady = function() {
       if (typeof originalOnReady === 'function') originalOnReady();
       criarPlayersTestimonial();
     };
 
-    const loadObserver = new IntersectionObserver(function(entries) {
+    // Observer só dispara o PLAY (o carregamento já aconteceu antes).
+    const playObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
-        if (entry.isIntersecting && !srcSet) {
-          srcSet = true;
-          iframes.forEach(function(iframe) {
-            const videoId = iframe.getAttribute('data-video-id');
-            iframe.src = 'https://www.youtube.com/embed/' + videoId +
-              '?autoplay=1&mute=1&controls=0&rel=0&playsinline=1&loop=1&playlist=' + videoId + '&enablejsapi=1&origin=' + window.location.origin;
-          });
-          criarPlayersTestimonial();
-          loadObserver.unobserve(entry.target);
+        if (entry.isIntersecting && !sectionVisible) {
+          sectionVisible = true;
+          tentarTocarTodos();
+          playObserver.unobserve(entry.target);
         }
       });
     }, { threshold: 0.3 });
 
-    loadObserver.observe(carousel);
+    playObserver.observe(carousel);
 
     // ── MUTE INDIVIDUAL POR VIDEO ──
     window.toggleTestimonialMute = function(index) {
       const btn = carousel.querySelectorAll('.btn-mute-testimonial')[index];
       const player = testimonialPlayers[index];
-      if (!player || typeof player.unMute !== 'function') return;
+      if (!player || !testimonialReady[index] || typeof player.unMute !== 'function') return;
 
       const iconMuted = btn.querySelector('.icon-t-muted');
       const iconSound = btn.querySelector('.icon-t-sound');
