@@ -59,7 +59,7 @@
     font-display: optional;
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body {
     background: var(--black);
@@ -1300,6 +1300,7 @@
     background: var(--dark2);
     padding: 80px 24px;
     text-align: center;
+    overflow-x: hidden;
   }
   .section-testimonials h2 {
     font-family: var(--font-display);
@@ -2296,7 +2297,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
           iframes.forEach(function(iframe) {
             const videoId = iframe.getAttribute('data-video-id');
             iframe.src = 'https://www.youtube.com/embed/' + videoId +
-              '?autoplay=1&mute=1&controls=0&rel=0&playsinline=1&loop=1&playlist=' + videoId + '&enablejsapi=1';
+              '?autoplay=1&mute=1&controls=0&rel=0&playsinline=1&loop=1&playlist=' + videoId + '&enablejsapi=1&origin=' + window.location.origin;
           });
           loadObserver.unobserve(entry.target);
         }
@@ -2318,11 +2319,13 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
       if (testimonialMuted[index]) {
         iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
         iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
         testimonialMuted[index] = false;
         iconMuted.style.display = 'none';
         iconSound.style.display = 'block';
       } else {
         iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
         testimonialMuted[index] = true;
         iconMuted.style.display = 'block';
         iconSound.style.display = 'none';
