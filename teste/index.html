@@ -59,7 +59,7 @@
     font-display: optional;
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body {
     background: var(--black);
@@ -869,13 +869,15 @@
   .ticket-price-old {
     font-size: 13px;
     color: var(--grey);
-    text-decoration: line-through;
     text-align: center;
     margin-bottom: 4px;
     min-height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .ticket-price-old .riscado {
+    text-decoration: line-through;
   }
   .ticket-price {
     font-family: var(--font-display);
@@ -1477,7 +1479,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
       <div class="ticket-header"><h3>Acesso Individual</h3></div>
       <div class="ticket-body">
         <p class="ticket-desc">Este acesso garante sua participação no evento.</p>
-        <p class="ticket-price-old">de £ 297 por apenas</p>
+        <p class="ticket-price-old">de <span class="riscado">£ 297</span> por apenas</p>
         <div class="ticket-price"><span>£</span>97</div>
         <p class="ticket-installments">ou em até 3x no cartão</p>
         <ul class="ticket-features">
@@ -1502,7 +1504,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
       <div class="ticket-header"><h3>Acesso Duplo</h3></div>
       <div class="ticket-body">
         <p class="ticket-desc">Você + 1 convidado.</p>
-        <p class="ticket-price-old">de £ 297 + 1 ingresso bônus por apenas</p>
+        <p class="ticket-price-old">de <span class="riscado">£ 594</span> por apenas</p>
         <div class="ticket-price"><span>£</span>147</div>
         <p class="ticket-installments">ou em até 3x no cartão</p>
         <ul class="ticket-features">
@@ -1529,13 +1531,14 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
       <div class="ticket-header"><h3>Acesso Triplo</h3></div>
       <div class="ticket-body">
         <p class="ticket-desc">Você + 2 convidados.</p>
-        <p class="ticket-price-old">de £ 297 + 2 ingressos bônus por apenas</p>
+        <p class="ticket-price-old">de <span class="riscado">£ 891</span> por apenas</p>
         <div class="ticket-price"><span>£</span>197</div>
         <p class="ticket-installments">ou em até 3x no cartão</p>
         <ul class="ticket-features">
           <li>3 participações nos 3 dias do Imersão Método EVO</li>
           <li>Acesso a todas as ferramentas</li>
           <li>Material de apoio para os três</li>
+          <li>Bônus: livro "Tríade do Poder"</li>
         </ul>
         <a href="https://pay2.metodoevo.com.br/PLACEHOLDER-TRIPLO" target="_blank" rel="noopener" class="btn-ticket btn-checkout" data-ingresso="triplo">INSCREVER-ME AGORA</a>
         <p style="font-size:12px;font-weight:300;color:var(--grey);text-align:center;">🔒 Compra 100% segura</p>
