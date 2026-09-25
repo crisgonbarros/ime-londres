@@ -971,6 +971,13 @@
     transition: background 0.2s, color 0.2s, transform 0.15s;
   }
   .btn-ticket:hover { background: var(--green-dark); color: var(--white); transform: translateY(-2px); }
+  .btn-ticket:disabled,
+  .btn-ticket:disabled:hover {
+    background: #3a3a3a;
+    color: #888;
+    cursor: not-allowed;
+    transform: none;
+  }
   .ticket-notice {
     font-size: 12px;
     color: var(--grey);
@@ -1462,7 +1469,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
           <li>Acesso a todas as ferramentas</li>
           <li>Material de apoio</li>
         </ul>
-        <a href="https://pay.metodoevo.com.br/?uid=a208fa09-c41b-4a21-8e53-3b0900e9d388" target="_blank" rel="noopener" class="btn-ticket btn-checkout" data-ingresso="individual">INSCREVER-ME AGORA</a>
+        <button type="button" class="btn-ticket" disabled>INGRESSOS ESGOTADOS</button>
         <p style="font-size:12px;font-weight:300;color:var(--grey);text-align:center;">🔒 Compra 100% segura</p>
       </div>
       <div class="ticket-footer">
@@ -1487,7 +1494,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
           <li>Acesso a todas as ferramentas</li>
           <li>Material de apoio para os dois</li>
         </ul>
-        <a href="https://pay.metodoevo.com.br/?uid=58509a57-fd7e-485d-98d6-979b30a10a9b" target="_blank" rel="noopener" class="btn-ticket btn-checkout" data-ingresso="duplo">INSCREVER-ME AGORA</a>
+        <button type="button" class="btn-ticket" disabled>INGRESSOS ESGOTADOS</button>
         <p style="font-size:12px;font-weight:300;color:var(--grey);text-align:center;">🔒 Compra 100% segura</p>
         <p style="font-size:11px;font-weight:300;color:var(--grey);text-align:center;margin-top:8px;">Após a inscrição você receberá um link para cadastrar seu convidado.</p>
       </div>
@@ -1515,7 +1522,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
           <li>Material de apoio para os três</li>
           <li>Bônus: livro "Tríade do Poder"</li>
         </ul>
-        <a href="https://pay.metodoevo.com.br/?uid=c5313316-0b91-4206-8861-4c861013c1a7" target="_blank" rel="noopener" class="btn-ticket btn-checkout" data-ingresso="triplo">INSCREVER-ME AGORA</a>
+        <button type="button" class="btn-ticket" disabled>INGRESSOS ESGOTADOS</button>
         <p style="font-size:12px;font-weight:300;color:var(--grey);text-align:center;">🔒 Compra 100% segura</p>
         <p style="font-size:11px;font-weight:300;color:var(--grey);text-align:center;margin-top:8px;">Após a inscrição você receberá links para cadastrar seus dois convidados.</p>
       </div>
