@@ -1611,12 +1611,27 @@
     .wl-check circle, .wl-check path { animation: none; stroke-dashoffset: 0; }
   }
 
-  /* ── SELETOR DE IDIOMA PT | EN ── */
-  .lang-switch { display: inline-flex; flex: 0 0 auto; border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; overflow: hidden; }
-  .lang-switch button { background: transparent; border: 0; color: var(--grey-light); font: 700 11px var(--font-display); letter-spacing: 0.05em; padding: 7px 10px; cursor: pointer; line-height: 1; }
-  .lang-switch button[aria-pressed="true"] { background: var(--cyan); color: var(--black); }
-  .lang-switch button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
-  @media (max-width: 600px) { .lang-switch button { padding: 6px 7px; font-size: 10px; } }
+  /* ── SELETOR DE IDIOMA PT | EN (bandeira de fundo: colorida = ativo, preto e branco = inativo) ── */
+  .lang-switch { display: inline-flex; flex: 0 0 auto; border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; overflow: hidden; background: #111; }
+  .lang-switch button {
+    border: 0; cursor: pointer; line-height: 1; padding: 8px 12px; min-width: 40px;
+    font: 800 11px var(--font-display); letter-spacing: 0.06em; color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 2px rgba(0,0,0,0.8);
+    background-color: #222; background-size: cover; background-position: center; background-repeat: no-repeat;
+    filter: grayscale(1) brightness(0.8); transition: filter .2s;
+  }
+  .lang-switch button[data-lang="pt"] { background-image: linear-gradient(rgba(0,0,0,0.32), rgba(0,0,0,0.32)), url("https://flagcdn.com/w80/br.png"); }
+  .lang-switch button[data-lang="en"] { background-image: linear-gradient(rgba(0,0,0,0.38), rgba(0,0,0,0.38)), url("https://flagcdn.com/w80/gb.png"); }
+  .lang-switch button:hover { filter: grayscale(0.4) brightness(0.95); }
+  .lang-switch button[aria-pressed="true"] { filter: none; box-shadow: inset 0 0 0 2px #fff; }
+  .lang-switch button:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+  @media (max-width: 600px) { .lang-switch button { padding: 7px 9px; min-width: 34px; font-size: 10px; } }
+  @media (max-width: 380px) {
+    .lang-switch button { padding: 7px 6px; min-width: 0; }
+    .nav { gap: 6px; }
+    .wl-counter { padding: 5px 8px; font-size: 10px; gap: 5px; }
+    .wl-counter strong { font-size: 13px; }
+  }
 </style>
 <!-- Meta Pixel -->
 <script>
@@ -1720,7 +1735,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
   <p class="sub">3 DIAS DE TRANSFORMAÇÃO PESSOAL COM FERRAMENTAS E TÉCNICAS PARA VOCÊ</p>
   <h2><span class="evo-gradient">Mudar a sua vida para melhor</span> e para sempre!</h2>
   <div class="video-wrap">
-    <iframe id="yt-player" src="https://www.youtube.com/embed/awAhT4j2ECo?autoplay=1&mute=1&enablejsapi=1&controls=0&rel=0&playsinline=1" title="Imersão Método EVO" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" width="800" height="450"></iframe>
+    <iframe id="yt-player" src="https://www.youtube.com/embed/awAhT4j2ECo?autoplay=1&mute=1&enablejsapi=1&controls=0&rel=0&playsinline=1&cc_load_policy=1&cc_lang_pref=pt&hl=pt" title="Imersão Método EVO" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" width="800" height="450"></iframe>
     <button id="btn-mute-yt" type="button" onclick="toggleMute()" title="Ativar/desativar som" aria-label="Ativar ou desativar o som do vídeo">
       <svg id="icon-muted" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs><linearGradient id="gmuted" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
@@ -2160,7 +2175,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     if (errState.form) formError.textContent = T('formError');
     paintSuccess(successKind || 'new');
     // legenda do vídeo
-    applyCaptions();
+    applyCaptions(true);
     // endereço: ?lang=en para poder compartilhar a versão em inglês (sem recarregar)
     if (fromClick) {
       try {
@@ -2174,35 +2189,43 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     b.addEventListener('click', function () { setLanguage(b.getAttribute('data-lang'), true); });
   });
 
-  // Legenda do vídeo (YouTube): em inglês tenta ligar a legenda em inglês; em português desliga.
+  // Legenda do vídeo (YouTube): sempre ligada, no idioma da página (PT ou EN).
   // Usa o método do player que o YouTube não documenta oficialmente; se não responder, o vídeo segue normal.
   var ccDebug = params.get('debugcc') === '1';
   function ccLog(a, b) { if (ccDebug && window.console) console.log('[cc]', a, b === undefined ? '' : b); }
-  var ccTimer = null;
-  function applyCaptions() {
+  var ccTimer = null, ccDone = false, ccTries = 0;
+  function applyCaptions(force) {
     if (!ytPlayer || typeof ytPlayer.setOption !== 'function') return;
+    if (force) { ccDone = false; ccTries = 0; }
+    if (ccDone || ccTries >= 4) return;
+    ccTries++;
     clearTimeout(ccTimer);
+    var want = LANG;
     try {
-      if (LANG === 'en') {
-        ytPlayer.loadModule('captions');
-        ytPlayer.setOption('captions', 'track', { languageCode: 'en' });
-        ccLog('tentativa 1: languageCode=en');
-        ccTimer = setTimeout(function () {
-          try {
-            var cur = ytPlayer.getOption('captions', 'track');
-            var list = ytPlayer.getOption('captions', 'tracklist') || [];
-            ccLog('faixa atual', cur); ccLog('faixas disponíveis', list);
-            if (cur && cur.languageCode === 'en') return;
-            if (list.length) {   // tenta traduzir a faixa existente (ex.: automática em português) para inglês
-              ytPlayer.setOption('captions', 'track', { languageCode: list[0].languageCode, translationLanguage: { languageCode: 'en' } });
-              ccLog('tentativa 2: tradução a partir de', list[0].languageCode);
-            }
-          } catch (e) { ccLog('erro na tentativa 2', String(e)); }
-        }, 1200);
-      } else {
-        ytPlayer.setOption('captions', 'track', {});
-        ytPlayer.unloadModule('captions');
-      }
+      ytPlayer.loadModule('captions');
+      ytPlayer.setOption('captions', 'track', { languageCode: want });
+      ccLog('tentativa ' + ccTries + ': languageCode=' + want);
+      ccTimer = setTimeout(function () {
+        try {
+          var cur = ytPlayer.getOption('captions', 'track');
+          var list = ytPlayer.getOption('captions', 'tracklist') || [];
+          ccLog('faixa atual', cur); ccLog('faixas disponíveis', list);
+          if (cur && cur.languageCode === want) { ccDone = true; return; }
+          if (!list.length) {   // lista ainda vazia: o player pode demorar a carregar as legendas; tenta de novo
+            if (ccTries < 4) ccTimer = setTimeout(function () { applyCaptions(false); }, 2500);
+            return;
+          }
+          var base = list[0];
+          for (var i = 0; i < list.length; i++) { if (String(list[i].languageCode).indexOf('pt') === 0) { base = list[i]; break; } }
+          if (want === 'pt') {   // não achou "pt": usa a primeira faixa disponível
+            ytPlayer.setOption('captions', 'track', base);
+            ccLog('português: usando a faixa', base.languageCode);
+          } else {               // inglês: traduz a faixa existente (ex.: automática em português)
+            ytPlayer.setOption('captions', 'track', { languageCode: base.languageCode, translationLanguage: { languageCode: 'en' } });
+            ccLog('tradução para inglês a partir de', base.languageCode);
+          }
+        } catch (e) { ccLog('erro na verificação', String(e)); }
+      }, 1200);
     } catch (e) { ccLog('erro', String(e)); }
   }
 
@@ -2642,8 +2665,9 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
   document.head.appendChild(ytApiTag);
   window.onYouTubeIframeAPIReady = function () {
     ytPlayer = new YT.Player('yt-player', { events: {
-      onReady: function () { if (LANG === 'en') applyCaptions(); },
-      onApiChange: function () { if (LANG === 'en') applyCaptions(); }
+      onReady: function () { applyCaptions(true); },
+      onApiChange: function () { applyCaptions(false); },
+      onStateChange: function (e) { if (e && e.data === 1) applyCaptions(false); }
     } });
   };
   window.toggleMute = function () {
