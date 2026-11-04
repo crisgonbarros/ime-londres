@@ -1610,6 +1610,13 @@
     .wl-live::after, .wl-counter.bump strong, .wl-box { animation: none; }
     .wl-check circle, .wl-check path { animation: none; stroke-dashoffset: 0; }
   }
+
+  /* ── SELETOR DE IDIOMA PT | EN ── */
+  .lang-switch { display: inline-flex; flex: 0 0 auto; border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; overflow: hidden; }
+  .lang-switch button { background: transparent; border: 0; color: var(--grey-light); font: 700 11px var(--font-display); letter-spacing: 0.05em; padding: 7px 10px; cursor: pointer; line-height: 1; }
+  .lang-switch button[aria-pressed="true"] { background: var(--cyan); color: var(--black); }
+  .lang-switch button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+  @media (max-width: 600px) { .lang-switch button { padding: 6px 7px; font-size: 10px; } }
 </style>
 <!-- Meta Pixel -->
 <script>
@@ -1664,6 +1671,10 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     </div>
   </div>
 
+  <div class="lang-switch" role="group" aria-label="Idioma / Language">
+    <button type="button" data-lang="pt" aria-pressed="true" lang="pt-BR">PT</button>
+    <button type="button" data-lang="en" aria-pressed="false" lang="en-GB">EN</button>
+  </div>
   <button type="button" class="nav-cta open-modal"><span class="nav-cta-full">Entrar na lista</span><span class="nav-cta-short">Entrar</span></button>
 </nav>
 
@@ -2039,6 +2050,162 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
   var refFromUrl = prettyName(params.get('ref'));
   var lastIndicou = refFromUrl; // "Cadastrar outra pessoa" mantém quem indicou
 
+
+  // ══════════════════════════════════════════
+  //  IDIOMA · português (padrão) e inglês britânico
+  //  Os textos em português continuam no HTML; o inglês só entra por cima.
+  // ══════════════════════════════════════════
+  var LANG = 'pt';
+  var EN_TEXT = {"Já temos": "", "na fila de espera": "on the waiting list", "Seja o primeiro a entrar na fila de espera": "Be the first to join the waiting list", "Seja o primeiro da fila": "Be first in line", "Entre na fila de espera": "Join the waiting list", "Entrar na lista": "Join the list", "Entrar": "Join", "Lista de espera · Londres": "Waiting list · London", "Você pode trocar de país, de rotina, de cenário…": "You can change country, routine, scenery…", "mas enquanto não mudar por dentro,": "but until you change from within,", "tudo se repete.": "everything repeats itself.", "A última Imersão Método EVO em Londres foi incrível. Ainda não temos previsão de quando teremos outra, mas você já pode": "The last Método EVO Immersion in London was incredible. We don't yet know when the next one will take place, but you can already", "se inscrever na lista de espera": "join the waiting list", "para receber todas as informações e poder participar.": "to receive all the details and be able to take part.", "Imersão presencial": "In-person immersion", "— Londres, Reino Unido": "— London, United Kingdom", "Próxima data:": "Next date:", "a confirmar": "to be confirmed", "Quem está na lista": "Everyone on the list", "será o primeiro a saber, antes mesmo de qualquer divulgação": "will be the first to know, before any public announcement", "Entrar na lista de espera": "Join the waiting list", "3 DIAS DE TRANSFORMAÇÃO PESSOAL COM FERRAMENTAS E TÉCNICAS PARA VOCÊ": "3 DAYS OF PERSONAL TRANSFORMATION WITH TOOLS AND TECHNIQUES FOR YOU", "Mudar a sua vida para melhor": "Change your life for the better", "e para sempre!": "and for good!", "Esse evento é": "This event is", "para você": "for you", "que:": "if you:", "Já tentou de tudo para que seus RELACIONAMENTOS dessem certo, mas até hoje não encontrou a resposta.": "Have tried everything to make your RELATIONSHIPS work, but still haven't found the answer.", "Tem vontade de conquistar relacionamentos saudáveis e duradouros.": "Want to build healthy, lasting relationships.", "Precisa gerenciar melhor suas emoções para fazer escolhas de forma assertiva e no tempo certo.": "Need to manage your emotions better, so you can make decisive choices at the right time.", "Quer ressignificar sentimentos, emoções e memórias de eventos passados que não consegue esquecer.": "Want to give new meaning to the feelings, emotions and memories of past events you can't forget.", "Gostaria de desenvolver suas habilidades e potencialidades para obter melhores resultados na vida pessoal e profissional.": "Would like to develop your skills and potential to achieve better results in your personal and professional life.", "Sente-se preso a dores do passado e, por isso, não consegue ser feliz no presente.": "Feel held back by past pain and, because of that, can't be happy in the present.", "Quer ampliar o autoconhecimento e compreender melhor suas emoções e comportamentos.": "Want to deepen your self-awareness and better understand your emotions and behaviour.", "Procura fortalecer sua autoconfiança e ampliar suas competências de liderança.": "Are looking to strengthen your self-confidence and broaden your leadership skills.", "Conteúdo de cada dia": "What we cover each day", "Conheça o que é ministrado nos 3 dias da Imersão": "Find out what is taught over the 3 days of the Immersion", "Primeiro Dia": "Day One", "O que é o Método EVO": "What the Método EVO is", "Descobrindo a essência humana": "Discovering the human essence", "Ativando sua essência": "Activating your essence", "Assumir o controle do cérebro": "Taking control of your brain", "Como fazer escolhas assertivas": "How to make decisive choices", "Descobrir e ativar sua identidade": "Discovering and activating your identity", "Segundo Dia": "Day Two", "Ciclo da Autossabotagem": "The Self-Sabotage Cycle", "A importância do passado, presente e futuro": "The importance of the past, present and future", "Origem do medo": "The origin of fear", "Como identificar e eliminar seus medos": "How to identify and overcome your fears", "Passo a passo para a prosperidade": "A step-by-step path to prosperity", "Identificar motivações temporárias e permanentes": "Identifying temporary and lasting motivations", "Terceiro Dia": "Day Three", "Consequências da Autossabotagem": "The Consequences of Self-Sabotage", "Blindagem da mente": "Shielding your mind", "Ressignificar no presente": "Reframing the present", "Ressignificando o passado": "Reframing the past", "Datas e horários da próxima turma ainda serão confirmados — a lista de espera recebe tudo primeiro.": "Dates and times for the next group are still to be confirmed — the waiting list gets everything first.", "Prazer, eu sou Marcio Micheli": "Pleased to meet you, I'm Marcio Micheli", "Especialista em Inteligência Emocional e Comportamento Humano": "Specialist in Emotional Intelligence and Human Behaviour", "Autor dos livros": "Author of the books", "e do livro que foi o Top 1 mais vendido da Veja em Junho de 2024,": "and of the book that was No. 1 on Veja's bestseller list in June 2024,", "Minha família é o": "My family is my", "meu bem mais precioso": "most precious treasure", "e juntos temos criado memórias extraordinárias. Sou ex-servidor público e, embora tenha exercido essa função com dedicação, descobri verdadeiramente o meu propósito de vida por meio do Coaching e quero compartilhar com você todas as": "and together we have created extraordinary memories. I am a former civil servant and, although I carried out that role with dedication, I truly discovered my purpose in life through coaching, and I want to share with you all the", "infinitas possibilidades": "infinite possibilities", "de realizações que temos nessa vida de sermos felizes com aquilo que somos.": "for achievement that we have in this life of being happy with who we are.", "Venha comigo! Eu quero apresentar para você como": "Come with me! I want to show you how to", "alcançar seus objetivos": "achieve your goals", "mais ousados.": ", even the boldest ones.", "Seja o": "Be the", "primeiro a saber": "first to know", "Entre na lista de espera da próxima Imersão Método EVO em Londres e receba todas as informações antes mesmo de qualquer divulgação.": "Join the waiting list for the next Método EVO Immersion in London and receive all the details before any public announcement.", "Política de privacidade": "Privacy Policy", "Termos de uso": "Terms of Use", "© 2026 IME – Imersão Método EVO · Londres": "© 2026 IME – Método EVO Immersion · London", "Entre na lista de espera e seja o primeiro a saber:": "Join the waiting list and be the first to know:", "Preencha seus dados para receber todas as informações da próxima Imersão em Londres.": "Fill in your details to receive all the information about the next Immersion in London.", "Nome completo *": "Full name *", "E-mail *": "Email *", "Telefone / WhatsApp *": "Mobile / WhatsApp *", "Quem indicou você?": "Who referred you?", "Indicação registrada pelo link que você recebeu.": "Referral recorded from the link you received.", "Não preencha este campo": "Do not fill in this field", "🔒 Ao entrar na lista, você aceita receber comunicações sobre a próxima Imersão Método EVO em Londres. Seus dados estão protegidos — veja nossa": "🔒 By joining the list, you agree to receive communications about the next Método EVO Immersion in London. Your data is protected — see our", "Salvando seus dados...": "Saving your details...", "Conhece alguém que também quer participar? Dá para cadastrar outra pessoa agora.": "Know someone else who'd like to take part? You can register another person now.", "Cadastrar outra pessoa": "Register another person", "Voltar para a página": "Back to the page"};
+  var EN_ATTR = {"title|Imersão Método EVO": "Método EVO Immersion", "title|Ativar/desativar som": "Turn sound on/off", "aria-label|Ativar ou desativar o som do vídeo": "Turn the video sound on or off", "alt|Evento IME": "IME event", "aria-label|Fechar": "Close", "placeholder|Seu nome completo": "Your full name", "placeholder|seu@email.com": "you@email.com", "placeholder|Buscar país ou código": "Search country or code", "aria-label|Buscar país ou código": "Search country or code", "aria-label|Países": "Countries", "placeholder|Nome de quem indicou": "Name of the person who referred you"};
+  var TITLE = { pt: document.title, en: 'Waiting List | Método EVO Immersion London' };
+  var STR = {
+    optional:       { pt: '(opcional)', en: '(optional)' },
+    optionalLocked: { pt: '(pelo seu link)', en: '(from your link)' },
+    counterOne:     { pt: 'pessoa na fila de espera cadastrada', en: 'person has already joined the waiting list' },
+    counterMany:    { pt: 'pessoas na fila de espera cadastradas', en: 'people have already joined the waiting list' },
+    formError:      { pt: FORM_ERROR_MSG, en: 'There was an error registering your details. Please let the team know and try again shortly.' },
+    errNome:        { pt: 'Por favor, informe seu nome completo.', en: 'Please enter your full name.' },
+    errEmail:       { pt: 'Por favor, informe um e-mail válido.', en: 'Please enter a valid email address.' },
+    errTelPlus:     { pt: 'Digite o número completo começando com + e o código do país.', en: 'Enter the full number, starting with + and the country code.' },
+    errTel:         { pt: 'Por favor, informe um telefone válido.', en: 'Please enter a valid phone number.' },
+    noCountry:      { pt: 'Nenhum país encontrado. Use "Outro país" e digite o código com +.', en: 'No country found. Use "Other country" and enter the code with +.' },
+    ddiOther:       { pt: 'Outro', en: 'Other' },
+    otherName:      { pt: 'Outro país (digite o código com +)', en: 'Other country (enter the code with +)' },
+    phoneOther:     { pt: '+000 número completo', en: '+000 full number' },
+    phoneGeneric:   { pt: 'Número de telefone', en: 'Phone number' },
+    ddiAria:        { pt: 'País selecionado: {c}. Clique para alterar.', en: 'Selected country: {c}. Click to change.' },
+    okNewTitle:     { pt: 'Você está na lista!', en: "You're on the list!" },
+    okNewText:      { pt: 'Obrigado por se cadastrar. Você será um dos primeiros a saber da próxima Imersão Método EVO em Londres, antes mesmo de qualquer divulgação.', en: 'Thank you for signing up. You will be one of the first to hear about the next Método EVO Immersion in London, before any public announcement.' },
+    okDupTitle:     { pt: 'Seu e-mail já está na lista!', en: 'Your email is already on the list!' },
+    okDupText:      { pt: 'Tudo certo: este e-mail já estava cadastrado, então não precisa fazer mais nada. Você continua entre os primeiros a saber da próxima Imersão em Londres.', en: "All good: this email was already registered, so there's nothing more to do. You'll still be among the first to hear about the next Immersion in London." }
+  };
+  function T(k) { return STR[k][LANG]; }
+  function locale() { return LANG === 'en' ? 'en-GB' : 'pt-BR'; }
+
+  var errState = { nome: null, email: null, telefone: null, form: false };
+  var successKind = null;
+
+  // Nomes dos países em inglês: vêm do próprio navegador (Intl); se não existir, fica o nome em português
+  var regionNames = null;
+  try { if (typeof Intl !== 'undefined' && Intl.DisplayNames) regionNames = new Intl.DisplayNames(['en-GB'], { type: 'region' }); } catch (e) { regionNames = null; }
+  function cname(c) {
+    if (LANG !== 'en') return c[1];
+    if (c[0] === '--') return STR.otherName.en;
+    try { var n = regionNames && regionNames.of(c[0]); if (n && n !== c[0]) return n; } catch (e) { /* usa o nome em português */ }
+    return c[1];
+  }
+  function orderedCountries() {
+    if (LANG !== 'en') return COUNTRIES;
+    var head = COUNTRIES.slice(0, 6), last = COUNTRIES[COUNTRIES.length - 1];
+    var tail = COUNTRIES.slice(6, COUNTRIES.length - 1).sort(function (a, b) { return cname(a).localeCompare(cname(b), 'en-GB'); });
+    return head.concat(tail, [last]);
+  }
+
+  // Textos e atributos fixos do HTML (coletados uma vez, com o português original)
+  var DYN_SKIP = '#wl-success-title, #wl-success-text, .wl-word-full, #wl-indicou-optional, #ddi-btn-label';
+  var ATTR_SKIP = '#ddi-btn, #wl-telefone';
+  var textRefs = [], attrRefs = [];
+  (function collectI18n() {
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
+    while ((n = w.nextNode())) {
+      var par = n.parentNode;
+      if (!par || /^(SCRIPT|STYLE)$/.test(par.tagName) || (par.closest && par.closest(DYN_SKIP))) continue;
+      var key = n.nodeValue.replace(/\s+/g, ' ').trim();
+      if (key && Object.prototype.hasOwnProperty.call(EN_TEXT, key)) textRefs.push({ node: n, pt: n.nodeValue, en: EN_TEXT[key] });
+    }
+    document.body.querySelectorAll('[alt],[title],[placeholder],[aria-label]').forEach(function (el) {
+      if (el.matches(ATTR_SKIP)) return;
+      ['alt', 'title', 'placeholder', 'aria-label'].forEach(function (a) {
+        if (!el.hasAttribute(a)) return;
+        var k = a + '|' + el.getAttribute(a);
+        if (Object.prototype.hasOwnProperty.call(EN_ATTR, k)) attrRefs.push({ el: el, attr: a, pt: el.getAttribute(a), en: EN_ATTR[k] });
+      });
+    });
+  })();
+
+  function applyStatic() {
+    textRefs.forEach(function (r) {
+      if (LANG !== 'en') { r.node.nodeValue = r.pt; return; }
+      var m = /^(\s*)([\s\S]*?)(\s*)$/.exec(r.pt);
+      var lead = /^[,.;:!?]/.test(r.en) ? '' : m[1];
+      r.node.nodeValue = lead + r.en + m[3];
+    });
+    attrRefs.forEach(function (r) { r.el.setAttribute(r.attr, LANG === 'en' ? r.en : r.pt); });
+    document.title = TITLE[LANG];
+    document.documentElement.lang = LANG === 'en' ? 'en-GB' : 'pt-BR';
+  }
+
+  function renderSuccess(kind) { successKind = kind; paintSuccess(kind); }
+  function paintSuccess(kind) {
+    $('wl-success-title').innerHTML = '<span class="evo-gradient">' + T(kind === 'dup' ? 'okDupTitle' : 'okNewTitle') + '</span>';
+    $('wl-success-text').textContent = T(kind === 'dup' ? 'okDupText' : 'okNewText');
+  }
+
+  function setLanguage(l, fromClick) {
+    LANG = (l === 'en') ? 'en' : 'pt';
+    applyStatic();
+    document.querySelectorAll('.lang-switch button').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang') === LANG ? 'true' : 'false');
+    });
+    // contador
+    if (currentCount === null) wordEl.textContent = T('counterMany'); else renderCount(currentCount);
+    // etiqueta do campo "Quem indicou"
+    $('wl-indicou-optional').textContent = indicouLocked ? T('optionalLocked') : T('optional');
+    // país selecionado + lista de países (ordem e nomes mudam com o idioma)
+    selectCountry(selectedCountry, true);
+    if (ddiIsOpen()) renderDdiList(ddiSearch.value);
+    // mensagens que já estão na tela
+    ['nome', 'email', 'telefone'].forEach(function (k) { if (errState[k]) $('wl-erro-' + k).textContent = T(errState[k]); });
+    if (errState.form) formError.textContent = T('formError');
+    paintSuccess(successKind || 'new');
+    // legenda do vídeo
+    applyCaptions();
+    // endereço: ?lang=en para poder compartilhar a versão em inglês (sem recarregar)
+    if (fromClick) {
+      try {
+        var u = new URL(window.location.href);
+        if (LANG === 'en') u.searchParams.set('lang', 'en'); else u.searchParams.delete('lang');
+        window.history.replaceState(null, '', u.pathname + u.search + u.hash);
+      } catch (e) { /* sem histórico: segue sem alterar o endereço */ }
+    }
+  }
+  document.querySelectorAll('.lang-switch button').forEach(function (b) {
+    b.addEventListener('click', function () { setLanguage(b.getAttribute('data-lang'), true); });
+  });
+
+  // Legenda do vídeo (YouTube): em inglês tenta ligar a legenda em inglês; em português desliga.
+  // Usa o método do player que o YouTube não documenta oficialmente; se não responder, o vídeo segue normal.
+  var ccDebug = params.get('debugcc') === '1';
+  function ccLog(a, b) { if (ccDebug && window.console) console.log('[cc]', a, b === undefined ? '' : b); }
+  var ccTimer = null;
+  function applyCaptions() {
+    if (!ytPlayer || typeof ytPlayer.setOption !== 'function') return;
+    clearTimeout(ccTimer);
+    try {
+      if (LANG === 'en') {
+        ytPlayer.loadModule('captions');
+        ytPlayer.setOption('captions', 'track', { languageCode: 'en' });
+        ccLog('tentativa 1: languageCode=en');
+        ccTimer = setTimeout(function () {
+          try {
+            var cur = ytPlayer.getOption('captions', 'track');
+            var list = ytPlayer.getOption('captions', 'tracklist') || [];
+            ccLog('faixa atual', cur); ccLog('faixas disponíveis', list);
+            if (cur && cur.languageCode === 'en') return;
+            if (list.length) {   // tenta traduzir a faixa existente (ex.: automática em português) para inglês
+              ytPlayer.setOption('captions', 'track', { languageCode: list[0].languageCode, translationLanguage: { languageCode: 'en' } });
+              ccLog('tentativa 2: tradução a partir de', list[0].languageCode);
+            }
+          } catch (e) { ccLog('erro na tentativa 2', String(e)); }
+        }, 1200);
+      } else {
+        ytPlayer.setOption('captions', 'track', {});
+        ytPlayer.unloadModule('captions');
+      }
+    } catch (e) { ccLog('erro', String(e)); }
+  }
+
   // ══════════════════════════════════════════
   //  CONTADOR (barra fixa)
   // ══════════════════════════════════════════
@@ -2050,11 +2217,9 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
   var animFrame = null;
 
   function renderCount(n) {
-    var txt = Math.round(n).toLocaleString('pt-BR');
+    var txt = Math.round(n).toLocaleString(locale());
     for (var i = 0; i < numEls.length; i++) numEls[i].textContent = txt;
-    wordEl.textContent = Math.round(n) === 1
-      ? 'pessoa na fila de espera cadastrada'
-      : 'pessoas na fila de espera cadastradas';
+    wordEl.textContent = Math.round(n) === 1 ? T('counterOne') : T('counterMany');
   }
 
   function animateCount(from, to, duration) {
@@ -2130,15 +2295,15 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
 
   function renderDdiList(filter) {
     var f = norm(filter || '').replace(/^\+/, '');
-    ddiVisible = COUNTRIES.filter(function (c) {
+    ddiVisible = orderedCountries().filter(function (c) {
       if (!f) return true;
-      return norm(c[1]).indexOf(f) !== -1 || c[2].replace('+', '').indexOf(f) === 0 || norm(c[0]) === f;
+      return norm(cname(c)).indexOf(f) !== -1 || norm(c[1]).indexOf(f) !== -1 || c[2].replace('+', '').indexOf(f) === 0 || norm(c[0]) === f;
     });
     ddiList.innerHTML = '';
     if (!ddiVisible.length) {
       var li = document.createElement('li');
       li.className = 'ddi-empty';
-      li.textContent = 'Nenhum país encontrado. Use "Outro país" e digite o código com +.';
+      li.textContent = T('noCountry');
       ddiList.appendChild(li);
       ddiActive = -1;
       return;
@@ -2149,7 +2314,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
       li.setAttribute('role', 'option');
       li.setAttribute('data-i', i);
       var main = document.createElement('div'); main.className = 'ddi-item-main';
-      var name = document.createElement('span'); name.textContent = c[1];
+      var name = document.createElement('span'); name.textContent = cname(c);
       var code = document.createElement('small'); code.textContent = c[2];
       main.appendChild(makeFlag(c, true)); main.appendChild(name);
       li.appendChild(main); li.appendChild(code);
@@ -2169,11 +2334,11 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
 
   function selectCountry(c, keepFocus) {
     selectedCountry = c;
-    ddiLabel.textContent = c[0] === '--' ? 'Outro' : c[2];
+    ddiLabel.textContent = c[0] === '--' ? T('ddiOther') : c[2];
     ddiFlagSlot.innerHTML = '';
     ddiFlagSlot.appendChild(makeFlag(c, false));
-    ddiBtn.setAttribute('aria-label', 'País selecionado: ' + c[1] + (c[2] ? ' ' + c[2] : '') + '. Clique para alterar.');
-    telInput.placeholder = c[0] === '--' ? '+000 número completo' : (c[3] || 'Número de telefone');
+    ddiBtn.setAttribute('aria-label', T('ddiAria').replace('{c}', cname(c) + (c[2] ? ' ' + c[2] : '')));
+    telInput.placeholder = c[0] === '--' ? T('phoneOther') : (c[3] || T('phoneGeneric'));
     closeDdi();
     if (!keepFocus) telInput.focus();
   }
@@ -2227,7 +2392,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     indicouEl.setAttribute('aria-readonly', 'true');
     indicouEl.tabIndex = -1;
     indicouField.classList.add('is-locked');
-    $('wl-indicou-optional').textContent = '(pelo seu link)';
+    $('wl-indicou-optional').textContent = T('optionalLocked');
   }
 
   function showView(name) {
@@ -2243,6 +2408,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     });
     [nomeEl, emailEl, telInput].forEach(function (el) { el.removeAttribute('aria-invalid'); });
     formError.classList.remove('is-visible'); formError.textContent = '';
+    errState = { nome: null, email: null, telefone: null, form: false };
   }
 
   function resetFormForNewPerson() {
@@ -2301,7 +2467,8 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
   // ══════════════════════════════════════════
   function fieldError(key, el, msg) {
     var err = $('wl-erro-' + key);
-    err.textContent = msg; err.classList.add('is-visible');
+    errState[key] = msg;
+    err.textContent = T(msg); err.classList.add('is-visible');
     el.setAttribute('aria-invalid', 'true');
   }
 
@@ -2318,12 +2485,12 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     var digits = tel.replace(/\D/g, '');
     var ok = true;
 
-    if (nome.length < 3) { fieldError('nome', nomeEl, 'Por favor, informe seu nome completo.'); ok = false; }
-    if (!validEmail(email)) { fieldError('email', emailEl, 'Por favor, informe um e-mail válido.'); ok = false; }
+    if (nome.length < 3) { fieldError('nome', nomeEl, 'errNome'); ok = false; }
+    if (!validEmail(email)) { fieldError('email', emailEl, 'errEmail'); ok = false; }
     if (selectedCountry[0] === '--' && tel.charAt(0) !== '+') {
-      fieldError('telefone', telInput, 'Digite o número completo começando com + e o código do país.'); ok = false;
+      fieldError('telefone', telInput, 'errTelPlus'); ok = false;
     } else if (digits.length < 7) {
-      fieldError('telefone', telInput, 'Por favor, informe um telefone válido.'); ok = false;
+      fieldError('telefone', telInput, 'errTel'); ok = false;
     }
     if (!ok) {
       var firstBad = form.querySelector('[aria-invalid="true"]');
@@ -2349,7 +2516,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     lastIndicou = payload.indicou;
 
     if (!URL_OK) {
-      showFormError(FORM_ERROR_MSG);
+      showFormError();
       return;
     }
 
@@ -2373,12 +2540,13 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
         submitting = false;
         submitBtn.disabled = false;
         showView('form');
-        showFormError(FORM_ERROR_MSG);
+        showFormError();
       });
   });
 
-  function showFormError(msg) {
-    formError.textContent = msg;
+  function showFormError() {
+    errState.form = true;
+    formError.textContent = T('formError');
     formError.classList.add('is-visible');
   }
 
@@ -2390,11 +2558,9 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
       else if (!already && currentCount !== null) setCount(currentCount + 1);
     }
     if (already) {
-      $('wl-success-title').innerHTML = '<span class="evo-gradient">Seu e-mail já está na lista!</span>';
-      $('wl-success-text').textContent = 'Tudo certo: este e-mail já estava cadastrado, então não precisa fazer mais nada. Você continua entre os primeiros a saber da próxima Imersão em Londres.';
+      renderSuccess('dup');
     } else {
-      $('wl-success-title').innerHTML = '<span class="evo-gradient">Você está na lista!</span>';
-      $('wl-success-text').textContent = 'Obrigado por se cadastrar. Você será um dos primeiros a saber da próxima Imersão Método EVO em Londres, antes mesmo de qualquer divulgação.';
+      renderSuccess('new');
     }
     showView('success');
     if (!already) launchConfetti();
@@ -2474,7 +2640,12 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
   var ytApiTag = document.createElement('script');
   ytApiTag.src = 'https://www.youtube.com/iframe_api';
   document.head.appendChild(ytApiTag);
-  window.onYouTubeIframeAPIReady = function () { ytPlayer = new YT.Player('yt-player', {}); };
+  window.onYouTubeIframeAPIReady = function () {
+    ytPlayer = new YT.Player('yt-player', { events: {
+      onReady: function () { if (LANG === 'en') applyCaptions(); },
+      onApiChange: function () { if (LANG === 'en') applyCaptions(); }
+    } });
+  };
   window.toggleMute = function () {
     if (!ytPlayer || typeof ytPlayer.unMute !== 'function') return;
     if (isMuted) {
@@ -2500,6 +2671,9 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
 
   // Estado inicial do seletor de país
   selectCountry(COUNTRIES[0], true);
+
+  // Idioma inicial: sempre português, a menos que o link traga ?lang=en
+  if (/^en/i.test(params.get('lang') || '')) setLanguage('en', false);
 })();
 </script>
 
