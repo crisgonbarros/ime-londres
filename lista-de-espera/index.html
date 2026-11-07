@@ -2195,8 +2195,23 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
   // Legenda do vídeo (YouTube): sempre ligada, no idioma da página (PT ou EN).
   // Usa o método do player que o YouTube não documenta oficialmente; se não responder, o vídeo segue normal.
   var ccDebug = params.get('debugcc') === '1';
-  function ccLog(a, b) { if (ccDebug && window.console) console.log('[cc]', a, b === undefined ? '' : b); }
-  var ccTimer = null, ccDone = false, ccTries = 0, CC_MAX = 6;
+  var ccBox = null, ccLines = [];
+  function ccLog(a, b) {
+    if (!ccDebug) return;
+    var line = a + (b === undefined ? '' : ' ' + b);
+    if (window.console) console.log('[cc]', a, b === undefined ? '' : b);
+    try {   // depuração na tela (útil no celular, onde não há Console)
+      if (!ccBox) {
+        ccBox = document.createElement('div');
+        ccBox.style.cssText = 'position:fixed;left:0;right:0;bottom:0;max-height:38vh;overflow:auto;z-index:2147483647;background:rgba(0,0,0,.88);color:#7CFC9A;font:10px/1.35 monospace;padding:6px 8px;word-break:break-all;pointer-events:none';
+        document.body.appendChild(ccBox);
+      }
+      ccLines.push(new Date().toISOString().substr(14, 9) + ' ' + line);
+      if (ccLines.length > 40) ccLines.shift();
+      ccBox.textContent = ccLines.join('\n'); ccBox.style.whiteSpace = 'pre-wrap'; ccBox.scrollTop = ccBox.scrollHeight;
+    } catch (e) {}
+  }
+  var ccTimer = null, ccDone = false, ccTries = 0, CC_MAX = 6, ccSentEn = false, ccLastSend = 0, ccPlayRetries = 0;
   function ccJ(o) { try { return JSON.stringify(o); } catch (e) { return String(o); } }
   // Faixa-base: a que o player já escolheu (ex.: português automático) ou a 1ª da lista (prefere "pt")
   function ccBaseTrack() {
@@ -2214,11 +2229,11 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     try { c = ytPlayer.getOption('captions', 'track'); } catch (e) {}
     if (!c || !c.languageCode) return false;
     if (want === 'pt') return String(c.languageCode).indexOf('pt') === 0 && !c.translationLanguage;
-    return !!(c.translationLanguage && c.translationLanguage.languageCode === 'en') || c.languageCode === 'en';
+    return !!(c.translationLanguage && c.translationLanguage.languageCode === 'en') || c.languageCode === 'en' || ccSentEn;
   }
   function applyCaptions(force) {
     if (!ytPlayer || typeof ytPlayer.setOption !== 'function') return;
-    if (force) { ccDone = false; ccTries = 0; }
+    if (force) { ccDone = false; ccTries = 0; ccSentEn = false; }
     if (ccDone || ccTries >= CC_MAX) return;
     ccTries++;
     clearTimeout(ccTimer);
@@ -2238,6 +2253,7 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
         else if (n % 3 === 2) { t = { languageCode: base.languageCode, languageName: base.languageName, kind: base.kind, vss_id: base.vss_id, is_translateable: true, translationLanguage: { languageCode: 'en', languageName: 'English' } }; }
         else { t = { languageCode: base.languageCode, translationLanguage: tr }; }
         ytPlayer.setOption('captions', 'track', t);
+        ccSentEn = true; ccLastSend = Date.now();
         ccLog('enviado', ccJ(t));
       } else {
         ytPlayer.setOption('captions', 'track', { languageCode: 'en' });   // sem faixa ainda: tenta direto
@@ -2690,7 +2706,13 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
     ytPlayer = new YT.Player('yt-player', { events: {
       onReady: function () { applyCaptions(true); },
       onApiChange: function () { applyCaptions(false); },
-      onStateChange: function (e) { if (e && e.data === 1) applyCaptions(false); }
+      onStateChange: function (e) {
+        if (!e || e.data !== 1) return;
+        if (ccDone && LANG === 'pt') return;
+        // playing: no iPhone a faixa só existe depois do play; reenvia (no máx. 5x e espaçado, p/ não piscar)
+        if (Date.now() - ccLastSend > 6000 && ccPlayRetries < 5) { ccPlayRetries++; ccLog('play: reenviando legenda (' + ccPlayRetries + ')'); applyCaptions(true); }
+        else applyCaptions(false);
+      }
     } });
   };
   window.toggleMute = function () {
