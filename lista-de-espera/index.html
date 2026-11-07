@@ -2196,39 +2196,59 @@ src="https://www.facebook.com/tr?id=807598316077408&ev=PageView&noscript=1"
   // Usa o método do player que o YouTube não documenta oficialmente; se não responder, o vídeo segue normal.
   var ccDebug = params.get('debugcc') === '1';
   function ccLog(a, b) { if (ccDebug && window.console) console.log('[cc]', a, b === undefined ? '' : b); }
-  var ccTimer = null, ccDone = false, ccTries = 0;
+  var ccTimer = null, ccDone = false, ccTries = 0, CC_MAX = 6;
+  function ccJ(o) { try { return JSON.stringify(o); } catch (e) { return String(o); } }
+  // Faixa-base: a que o player já escolheu (ex.: português automático) ou a 1ª da lista (prefere "pt")
+  function ccBaseTrack() {
+    var cur = null, list = [];
+    try { cur = ytPlayer.getOption('captions', 'track'); } catch (e) {}
+    try { list = ytPlayer.getOption('captions', 'tracklist', { includeAsr: true }) || []; } catch (e) {}
+    if (!list.length) { try { list = ytPlayer.getOption('captions', 'tracklist') || []; } catch (e) {} }
+    ccLog('faixa atual', ccJ(cur)); ccLog('faixas disponíveis', ccJ(list));
+    if (cur && cur.languageCode) return cur;
+    for (var i = 0; i < list.length; i++) { if (String(list[i].languageCode).indexOf('pt') === 0) return list[i]; }
+    return list[0] || null;
+  }
+  function ccIsOk(want) {
+    var c = null;
+    try { c = ytPlayer.getOption('captions', 'track'); } catch (e) {}
+    if (!c || !c.languageCode) return false;
+    if (want === 'pt') return String(c.languageCode).indexOf('pt') === 0 && !c.translationLanguage;
+    return !!(c.translationLanguage && c.translationLanguage.languageCode === 'en') || c.languageCode === 'en';
+  }
   function applyCaptions(force) {
     if (!ytPlayer || typeof ytPlayer.setOption !== 'function') return;
     if (force) { ccDone = false; ccTries = 0; }
-    if (ccDone || ccTries >= 4) return;
+    if (ccDone || ccTries >= CC_MAX) return;
     ccTries++;
     clearTimeout(ccTimer);
-    var want = LANG;
+    var want = LANG, n = ccTries;
     try {
       ytPlayer.loadModule('captions');
-      ytPlayer.setOption('captions', 'track', { languageCode: want });
-      ccLog('tentativa ' + ccTries + ': languageCode=' + want);
+      ccLog('tentativa ' + n + ': idioma=' + want);
+      var base = ccBaseTrack();
+      if (want === 'pt') {
+        ytPlayer.setOption('captions', 'track', base || { languageCode: 'pt' });
+      } else if (base) {
+        // inglês: pede a tradução automática passando o objeto COMPLETO da faixa + translationLanguage.
+        // Variantes diferentes a cada tentativa, caso o player rejeite uma delas.
+        var tr = { languageCode: 'en' }, t = {};
+        for (var k in base) { if (Object.prototype.hasOwnProperty.call(base, k)) t[k] = base[k]; }
+        if (n % 3 === 1) { t.translationLanguage = tr; }
+        else if (n % 3 === 2) { t = { languageCode: base.languageCode, languageName: base.languageName, kind: base.kind, vss_id: base.vss_id, is_translateable: true, translationLanguage: { languageCode: 'en', languageName: 'English' } }; }
+        else { t = { languageCode: base.languageCode, translationLanguage: tr }; }
+        ytPlayer.setOption('captions', 'track', t);
+        ccLog('enviado', ccJ(t));
+      } else {
+        ytPlayer.setOption('captions', 'track', { languageCode: 'en' });   // sem faixa ainda: tenta direto
+      }
       ccTimer = setTimeout(function () {
         try {
-          var cur = ytPlayer.getOption('captions', 'track');
-          var list = ytPlayer.getOption('captions', 'tracklist') || [];
-          ccLog('faixa atual', cur); ccLog('faixas disponíveis', list);
-          if (cur && cur.languageCode === want) { ccDone = true; return; }
-          if (!list.length) {   // lista ainda vazia: o player pode demorar a carregar as legendas; tenta de novo
-            if (ccTries < 4) ccTimer = setTimeout(function () { applyCaptions(false); }, 2500);
-            return;
-          }
-          var base = list[0];
-          for (var i = 0; i < list.length; i++) { if (String(list[i].languageCode).indexOf('pt') === 0) { base = list[i]; break; } }
-          if (want === 'pt') {   // não achou "pt": usa a primeira faixa disponível
-            ytPlayer.setOption('captions', 'track', base);
-            ccLog('português: usando a faixa', base.languageCode);
-          } else {               // inglês: traduz a faixa existente (ex.: automática em português)
-            ytPlayer.setOption('captions', 'track', { languageCode: base.languageCode, translationLanguage: { languageCode: 'en' } });
-            ccLog('tradução para inglês a partir de', base.languageCode);
-          }
+          if (ccIsOk(want)) { ccDone = true; ccLog('OK', ccJ(ytPlayer.getOption('captions', 'track'))); return; }
+          ccLog('ainda não aplicou', ccJ(ytPlayer.getOption('captions', 'track')));
+          if (ccTries < CC_MAX) ccTimer = setTimeout(function () { applyCaptions(false); }, 2000);
         } catch (e) { ccLog('erro na verificação', String(e)); }
-      }, 1200);
+      }, 1500);
     } catch (e) { ccLog('erro', String(e)); }
   }
 
